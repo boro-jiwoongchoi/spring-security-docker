@@ -1,0 +1,23 @@
+version: "3"
+services:
+  database:
+    container_name: marketboro_database
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: root
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - 19306:3306
+  application:
+    build: .
+    ports:
+      - 10253:8080
+    depends_on:
+      - database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://marketboro_database:3306/root?characterEncoding=UTF-8
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+    links:
+      - database:database
